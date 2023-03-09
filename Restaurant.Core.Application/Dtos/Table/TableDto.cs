@@ -8,7 +8,7 @@ namespace Restaurant.Core.Application.Dtos.Table;
 
 public class TableDto: Base
 {
-    public string Name { get; set; }
     public int Capacity { get; set; }
-    public bool IsAvailable { get; set; }
+  public string Description { get; set; } = null!;
+  public int StatusId { get; set; }
 }

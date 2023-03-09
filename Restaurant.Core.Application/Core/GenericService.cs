@@ -20,7 +20,7 @@ public class GenericService<EntityVm, SaveEntityVm, Entity> : IGenericService<En
       var query = from entity in await _repository.GetAll()
                   select _mapper.Map<EntityVm>(entity);
 
-      result.Data = query.Any() ? query : null;
+      result.Data = query.Count() > 0 ? query.ToList() : null;
 
     } catch (Exception ex) {
       result.Success = false;
@@ -38,7 +38,7 @@ public class GenericService<EntityVm, SaveEntityVm, Entity> : IGenericService<En
     ServiceResult result = new();
     try {
       var entity = await _repository.GetEntity(id);
-      result.Data = _mapper.Map<EntityVm>(entity);
+      result.Data = entity != null ? _mapper.Map<EntityVm>(entity) : null;
     } catch (Exception ex) {
       result.Success = false;
       result.Message = ex.Message;

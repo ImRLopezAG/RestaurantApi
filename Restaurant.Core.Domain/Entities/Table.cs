@@ -10,8 +10,8 @@ public class Table: BasicEntity
 {
   public int Capacity { get; set; }
   public string Description { get; set; } = null!;
-  // Navigation properties
   public int StatusId { get; set; }
+  // Navigation Properties
   public TableStatus TableStatus { get; set; } = null!;
 
   public ICollection<Order> Orders { get; set; } = null!;

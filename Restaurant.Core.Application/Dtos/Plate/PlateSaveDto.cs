@@ -8,5 +8,7 @@ namespace Restaurant.Core.Application.Dtos.Plate;
 
 public class PlateSaveDto: Base
 {
-    
+  public double SubTotal { get; set; }
+  public int TableId { get; set; }
+  public int OrderStatusId { get; set; }
 }

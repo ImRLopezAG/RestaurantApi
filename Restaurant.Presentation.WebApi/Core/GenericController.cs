@@ -15,11 +15,16 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
   [HttpGet]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
-  public virtual async Task<ActionResult<IEnumerable<TDto>>> List([FromQuery] TDto filter) {
-    var result = await _service.GetAll().ContinueWith(t => t.Result.Data);
-    if (result == null)
-      return NotFound();
-    return Ok(result);
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  public virtual async Task<ActionResult<IEnumerable<TDto>>> List() {
+    try {
+      var result = await _service.GetAll().ContinueWith(x => x.Result.Data);
+      if (result == null)
+        return NotFound();
+      return Ok(result);
+    } catch (Exception e) {
+      return StatusCode(500, e.Message);
+    }
   }
 
   [HttpGet("{id}")]
@@ -27,8 +32,14 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public virtual async Task<ActionResult<TDto>> GetById(int id) {
-    var result = await _service.GetEntity(id);
-    return Ok(result);
+    try {
+      var result = await _service.GetById(id).ContinueWith(x => x.Result.Data);
+      if (result == null)
+        return NotFound();
+      return Ok(result);
+    } catch (Exception e) {
+      return StatusCode(500, e.Message);
+    }
   }
 
   [HttpPost]

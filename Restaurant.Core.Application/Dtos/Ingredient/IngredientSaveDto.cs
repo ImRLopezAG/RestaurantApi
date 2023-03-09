@@ -6,7 +6,7 @@ using Restaurant.Core.Application.Core.Models;
 
 namespace Restaurant.Core.Application.Dtos.Ingredient;
 
-public class IngredientSaveDto: Base
+public class IngredientSaveDto: BaseDto
 {
     
 }
