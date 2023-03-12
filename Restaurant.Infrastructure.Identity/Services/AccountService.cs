@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Restaurant.Core.Application.Contracts;
-using Restaurant.Core.Application.Dtos;
 using Restaurant.Core.Application.Dtos.Account;
 using Restaurant.Core.Application.Enums;
 using Restaurant.Infrastructure.Identity.Entities;
@@ -94,7 +93,7 @@ public class AccountService : IAccountService {
     return response;
   }
 
-  
+
   public async Task<ResetPasswordResponse> ResetPasswordAsync(ResetPasswordRequest request) {
     ResetPasswordResponse response = new() {
       HasError = false

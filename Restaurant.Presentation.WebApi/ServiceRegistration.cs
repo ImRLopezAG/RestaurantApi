@@ -1,6 +1,6 @@
 using Restaurant.Core.Application.Core;
 using Restaurant.Core.Application.Interfaces.Controllers;
-using Restaurant.Presentation.WebApi.Controllers;
+using Restaurant.Presentation.WebApi.Controllers.v1;
 using Restaurant.Presentation.WebApi.Core;
 
 namespace Restaurant.Presentation.WebApi;

@@ -20,7 +20,8 @@ public class GenericService<EntityVm, SaveEntityVm, Entity> : IGenericService<En
       var query = from entity in await _repository.GetAll()
                   select _mapper.Map<EntityVm>(entity);
 
-      result.Data = query.Count() > 0 ? query.ToList() : null;
+
+      result.Data = query.Count() > 0 ? query.ToList().OrderBy(e => e.Id) : null;
 
     } catch (Exception ex) {
       result.Success = false;
@@ -34,16 +35,9 @@ public class GenericService<EntityVm, SaveEntityVm, Entity> : IGenericService<En
     return _mapper.Map<SaveEntityVm>(entity);
   }
 
-  public virtual async Task<ServiceResult> GetById(int id) {
-    ServiceResult result = new();
-    try {
-      var entity = await _repository.GetEntity(id);
-      result.Data = entity != null ? _mapper.Map<EntityVm>(entity) : null;
-    } catch (Exception ex) {
-      result.Success = false;
-      result.Message = ex.Message;
-    }
-    return result;
+  public virtual async Task<EntityVm> GetById(int id) {
+    var entity = await _repository.GetEntity(id);
+    return _mapper.Map<EntityVm>(entity);
   }
   public virtual async Task<SaveEntityVm> Save(SaveEntityVm vm) {
     var entity = _mapper.Map<Entity>(vm);
@@ -61,5 +55,7 @@ public class GenericService<EntityVm, SaveEntityVm, Entity> : IGenericService<En
     var entity = await _repository.GetEntity(id);
     await _repository.Delete(entity);
   }
+
+
 }
 

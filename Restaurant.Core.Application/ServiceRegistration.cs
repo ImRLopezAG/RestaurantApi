@@ -18,7 +18,7 @@ public static class ServiceRegistration {
     services.AddTransient<IIngredientService, IngredientService>();
     services.AddTransient<IOrderService, OrderService>();
     services.AddTransient<ITableService, TableService>();
-    
+
     #endregion
   }
 }

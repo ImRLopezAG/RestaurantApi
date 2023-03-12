@@ -8,421 +8,270 @@ using Restaurant.Infrastructure.Persistence.Context;
 
 #nullable disable
 
-namespace Restaurant.Infrastructure.Persistence.Migrations
-{
-    [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
-    {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
+namespace Restaurant.Infrastructure.Persistence.Migrations {
+  [DbContext(typeof(RestaurantContext))]
+  partial class RestaurantContextModelSnapshot : ModelSnapshot {
+    protected override void BuildModel(ModelBuilder modelBuilder) {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.14")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+      modelBuilder
+          .HasAnnotation("ProductVersion", "6.0.14")
+          .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+      SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Ingredient", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Ingredient", b => {
+        b.Property<int>("Id")
+            .ValueGeneratedOnAdd()
+            .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+        SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+        b.Property<DateTime>("CreatedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+        b.Property<DateTime?>("LastModifiedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+        b.Property<string>("Name")
+            .IsRequired()
+            .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlateId")
-                        .HasColumnType("int");
+        b.Property<int?>("PlateId")
+            .HasColumnType("int");
 
-                    b.HasKey("Id");
+        b.HasKey("Id");
 
-                    b.HasIndex("PlateId");
+        b.HasIndex("PlateId");
 
-                    b.ToTable("Ingredients", (string)null);
-                });
+        b.ToTable("Ingredients", ( string )null);
+      });
 
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Order", b => {
+        b.Property<int>("Id")
+            .ValueGeneratedOnAdd()
+            .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+        SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+        b.Property<DateTime>("CreatedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+        b.Property<DateTime?>("LastModifiedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<int>("OrderStatusId")
-                        .HasColumnType("int");
+        b.Property<int>("StatusId")
+            .HasColumnType("int");
 
-                    b.Property<double>("SubTotal")
-                        .HasColumnType("float");
+        b.Property<int>("TableId")
+            .HasColumnType("int");
 
-                    b.Property<int>("TableId")
-                        .HasColumnType("int");
+        b.HasKey("Id");
 
-                    b.HasKey("Id");
+        b.HasIndex("TableId");
 
-                    b.HasIndex("OrderStatusId");
+        b.ToTable("Orders", ( string )null);
+      });
 
-                    b.HasIndex("TableId");
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.OrderPlate", b => {
+        b.Property<int>("Id")
+            .ValueGeneratedOnAdd()
+            .HasColumnType("int");
 
-                    b.ToTable("Orders", (string)null);
-                });
+        SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.OrderStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        b.Property<DateTime>("CreatedAt")
+            .HasColumnType("datetime2");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+        b.Property<DateTime?>("LastModifiedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+        b.Property<int>("OrderId")
+            .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+        b.Property<int>("PlateId")
+            .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+        b.HasKey("Id");
 
-                    b.HasKey("Id");
+        b.HasIndex("OrderId");
 
-                    b.ToTable("OrderStatuses", (string)null);
+        b.HasIndex("PlateId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2023, 3, 9, 11, 42, 44, 926, DateTimeKind.Local).AddTicks(3436),
-                            Name = "In Progress"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2023, 3, 9, 11, 42, 44, 926, DateTimeKind.Local).AddTicks(3439),
-                            Name = "Completed"
-                        });
-                });
+        b.ToTable("OrderPlates", ( string )null);
+      });
 
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Plate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Plate", b => {
+        b.Property<int>("Id")
+            .ValueGeneratedOnAdd()
+            .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+        SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
+        b.Property<int>("Capacity")
+            .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+        b.Property<int>("CategoryId")
+            .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+        b.Property<DateTime>("CreatedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+        b.Property<DateTime?>("LastModifiedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
+        b.Property<string>("Name")
+            .IsRequired()
+            .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlateCategoryId")
-                        .HasColumnType("int");
+        b.Property<int?>("OrderId")
+            .HasColumnType("int");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+        b.Property<double>("Price")
+            .HasColumnType("float");
 
-                    b.HasKey("Id");
+        b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+        b.HasIndex("OrderId");
 
-                    b.HasIndex("PlateCategoryId");
+        b.ToTable("Plates", ( string )null);
+      });
 
-                    b.ToTable("Plates", (string)null);
-                });
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.PlateIngredient", b => {
+        b.Property<int>("Id")
+            .ValueGeneratedOnAdd()
+            .HasColumnType("int");
 
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.PlateCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+        b.Property<DateTime>("CreatedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+        b.Property<int>("IngredientId")
+            .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+        b.Property<DateTime?>("LastModifiedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+        b.Property<int>("PlateId")
+            .HasColumnType("int");
 
-                    b.HasKey("Id");
+        b.HasKey("Id");
 
-                    b.ToTable("PlateCategories", (string)null);
+        b.HasIndex("IngredientId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2023, 3, 9, 11, 42, 44, 926, DateTimeKind.Local).AddTicks(3464),
-                            Name = "Entrance"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2023, 3, 9, 11, 42, 44, 926, DateTimeKind.Local).AddTicks(3466),
-                            Name = "Main Course"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2023, 3, 9, 11, 42, 44, 926, DateTimeKind.Local).AddTicks(3468),
-                            Name = "Dessert"
-                        });
-                });
+        b.HasIndex("PlateId");
 
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.PlateIngredient", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+        b.ToTable("PlateIngredients", ( string )null);
+      });
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Table", b => {
+        b.Property<int>("Id")
+            .ValueGeneratedOnAdd()
+            .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+        SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IngredientId")
-                        .HasColumnType("int");
+        b.Property<int>("Capacity")
+            .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+        b.Property<DateTime>("CreatedAt")
+            .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+        b.Property<string>("Description")
+            .IsRequired()
+            .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PlateId")
-                        .HasColumnType("int");
+        b.Property<DateTime?>("LastModifiedAt")
+            .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+        b.Property<int>("StatusId")
+            .HasColumnType("int");
 
-                    b.HasIndex("IngredientId");
+        b.HasKey("Id");
 
-                    b.HasIndex("PlateId");
+        b.ToTable("Tables", ( string )null);
+      });
 
-                    b.ToTable("PlateIngredients", (string)null);
-                });
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Ingredient", b => {
+        b.HasOne("Restaurant.Core.Domain.Entities.Plate", null)
+            .WithMany("Ingredients")
+            .HasForeignKey("PlateId");
+      });
 
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Table", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Order", b => {
+        b.HasOne("Restaurant.Core.Domain.Entities.Table", "Table")
+            .WithMany("Orders")
+            .HasForeignKey("TableId")
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+        b.Navigation("Table");
+      });
 
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.OrderPlate", b => {
+        b.HasOne("Restaurant.Core.Domain.Entities.Order", "Order")
+            .WithMany("OrderPlates")
+            .HasForeignKey("OrderId")
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+        b.HasOne("Restaurant.Core.Domain.Entities.Plate", "Plate")
+            .WithMany("OrderPlates")
+            .HasForeignKey("PlateId")
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+        b.Navigation("Order");
 
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
+        b.Navigation("Plate");
+      });
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Plate", b => {
+        b.HasOne("Restaurant.Core.Domain.Entities.Order", null)
+            .WithMany("Plates")
+            .HasForeignKey("OrderId");
+      });
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TableStatusId")
-                        .HasColumnType("int");
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.PlateIngredient", b => {
+        b.HasOne("Restaurant.Core.Domain.Entities.Ingredient", "Ingredient")
+            .WithMany("PlateIngredients")
+            .HasForeignKey("IngredientId")
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("TableStatusId");
-
-                    b.ToTable("Tables", (string)null);
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.TableStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LastModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TableStatuses", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2023, 3, 9, 11, 42, 44, 926, DateTimeKind.Local).AddTicks(3188),
-                            Name = "Available"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2023, 3, 9, 11, 42, 44, 926, DateTimeKind.Local).AddTicks(3205),
-                            Name = "Occupied"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2023, 3, 9, 11, 42, 44, 926, DateTimeKind.Local).AddTicks(3207),
-                            Name = "Attendant"
-                        });
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Ingredient", b =>
-                {
-                    b.HasOne("Restaurant.Core.Domain.Entities.Plate", null)
-                        .WithMany("Ingredients")
-                        .HasForeignKey("PlateId");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Order", b =>
-                {
-                    b.HasOne("Restaurant.Core.Domain.Entities.OrderStatus", "OrderStatus")
-                        .WithMany("Orders")
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Restaurant.Core.Domain.Entities.Table", "Table")
-                        .WithMany("Orders")
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderStatus");
-
-                    b.Navigation("Table");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Plate", b =>
-                {
-                    b.HasOne("Restaurant.Core.Domain.Entities.Order", null)
-                        .WithMany("Plates")
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("Restaurant.Core.Domain.Entities.PlateCategory", "PlateCategory")
-                        .WithMany("Plates")
-                        .HasForeignKey("PlateCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PlateCategory");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.PlateIngredient", b =>
-                {
-                    b.HasOne("Restaurant.Core.Domain.Entities.Ingredient", "Ingredient")
-                        .WithMany("PlateIngredients")
-                        .HasForeignKey("IngredientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Restaurant.Core.Domain.Entities.Plate", "Plate")
-                        .WithMany("PlateIngredients")
-                        .HasForeignKey("PlateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ingredient");
-
-                    b.Navigation("Plate");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Table", b =>
-                {
-                    b.HasOne("Restaurant.Core.Domain.Entities.TableStatus", "TableStatus")
-                        .WithMany("Tables")
-                        .HasForeignKey("TableStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TableStatus");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Ingredient", b =>
-                {
-                    b.Navigation("PlateIngredients");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Order", b =>
-                {
-                    b.Navigation("Plates");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.OrderStatus", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Plate", b =>
-                {
-                    b.Navigation("Ingredients");
-
-                    b.Navigation("PlateIngredients");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.PlateCategory", b =>
-                {
-                    b.Navigation("Plates");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.Table", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("Restaurant.Core.Domain.Entities.TableStatus", b =>
-                {
-                    b.Navigation("Tables");
-                });
+        b.HasOne("Restaurant.Core.Domain.Entities.Plate", "Plate")
+            .WithMany("PlateIngredients")
+            .HasForeignKey("PlateId")
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
+
+        b.Navigation("Ingredient");
+
+        b.Navigation("Plate");
+      });
+
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Ingredient", b => {
+        b.Navigation("PlateIngredients");
+      });
+
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Order", b => {
+        b.Navigation("OrderPlates");
+
+        b.Navigation("Plates");
+      });
+
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Plate", b => {
+        b.Navigation("Ingredients");
+
+        b.Navigation("OrderPlates");
+
+        b.Navigation("PlateIngredients");
+      });
+
+      modelBuilder.Entity("Restaurant.Core.Domain.Entities.Table", b => {
+        b.Navigation("Orders");
+      });
 #pragma warning restore 612, 618
-        }
     }
+  }
 }

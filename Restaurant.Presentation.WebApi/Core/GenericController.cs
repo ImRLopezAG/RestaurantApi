@@ -1,14 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 using Restaurant.Core.Application.Contracts.Core;
 using Restaurant.Core.Application.Core;
 using Restaurant.Core.Application.Core.Models;
 
 namespace Restaurant.Presentation.WebApi.Core;
-[ApiVersion("1.0")]
 public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGenericController<TDto, TSaveDto, TEntity> where TDto : class where TSaveDto : Base where TEntity : class {
 
   private readonly IGenericService<TDto, TSaveDto, TEntity> _service;
-
   public GenericController(IGenericService<TDto, TSaveDto, TEntity> service) => _service = service;
 
 
@@ -20,10 +19,11 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
     try {
       var result = await _service.GetAll().ContinueWith(x => x.Result.Data);
       if (result == null)
-        return NotFound();
-      return Ok(result);
+        return NotFound("There are no entities");
+
+      return Ok(result.ToJson());
     } catch (Exception e) {
-      return StatusCode(500, e.Message);
+      return StatusCode(500, $"Error while getting entities : {e.Message}");
     }
   }
 
@@ -33,28 +33,32 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public virtual async Task<ActionResult<TDto>> GetById(int id) {
     try {
-      var result = await _service.GetById(id).ContinueWith(x => x.Result.Data);
+      var result = await _service.GetById(id);
       if (result == null)
-        return NotFound();
+        return NotFound($"The entity with id {id} does not exist");
       return Ok(result);
     } catch (Exception e) {
-      return StatusCode(500, e.Message);
+      return StatusCode(500, $"Error while getting entity : {e.Message}");
     }
   }
 
   [HttpPost]
-  [ProducesResponseType(StatusCodes.Status200OK)]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType(StatusCodes.Status201Created)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public virtual async Task<ActionResult<TDto>> Create(TSaveDto dto) {
+  public virtual async Task<ActionResult> Create([FromQuery] TSaveDto dto) {
     try {
       if (!ModelState.IsValid)
-        return BadRequest(ModelState);
+        return BadRequest("Invalid data");
+
       var result = await _service.Save(dto);
-      return Ok(result);
+
+      if (result == null)
+        return BadRequest("Invalid data");
+
+      return StatusCode(201, $"The entity with id {result.Id} was created");
     } catch (Exception e) {
-      return StatusCode(500, e.Message);
+      return StatusCode(500, $"Error while creating entity : {e.Message}");
     }
   }
 
@@ -62,30 +66,38 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public virtual async Task<ActionResult<TDto>> Update(TSaveDto dto) {
+  public virtual async Task<ActionResult<TDto>> Update([FromQuery] TSaveDto dto) {
     try {
       if (!ModelState.IsValid)
-        return BadRequest(ModelState);
+        return BadRequest("Invalid data");
+
+      dto.Id = int.Parse(RouteData.Values["id"].ToString());
+
       var result = await _service.Edit(dto);
+
+      if (result == null)
+        return BadRequest("Invalid data");
+
       return Ok(result);
     } catch (Exception e) {
-      return StatusCode(500, e.Message);
+      return StatusCode(500, $"Error while updating entity : {e.Message}");
     }
   }
+
 
   [HttpDelete("{id}")]
   [ProducesResponseType(StatusCodes.Status204NoContent)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public virtual async Task<ActionResult<TDto>> Delete(int id) {
+  public virtual async Task<ActionResult> Delete(int id) {
     try {
       var entity = await _service.GetEntity(id);
       if (entity == null)
-        return NotFound();
+        return NotFound($"The entity with id {id} does not exist");
       await _service.Delete(id);
-      return Ok(entity);
+      return StatusCode(204, "The entity was deleted successfully");
     } catch (Exception e) {
-      return StatusCode(500, e.Message);
+      return StatusCode(500, $"Error while deleting entity : {e.Message}");
     }
   }
 }

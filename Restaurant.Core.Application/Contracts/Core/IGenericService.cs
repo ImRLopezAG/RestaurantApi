@@ -7,4 +7,5 @@ public interface IGenericService<EntityVm, SaveEntityVm, Entity> : IBaseService 
   Task<SaveEntityVm> Edit(SaveEntityVm vm);
   Task Delete(int id);
   Task<SaveEntityVm> GetEntity(int id);
+  Task<EntityVm> GetById(int id);
 }

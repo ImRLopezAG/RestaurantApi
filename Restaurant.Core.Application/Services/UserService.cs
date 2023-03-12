@@ -12,7 +12,7 @@ public class UserService : IUserService {
   private readonly IHttpContextAccessor _httpContextAccessor;
   private readonly IMapper _mapper;
 
-  public UserService(IAccountService accountService, IHttpContextAccessor httpContextAccessor,  IMapper mapper) {
+  public UserService(IAccountService accountService, IHttpContextAccessor httpContextAccessor, IMapper mapper) {
     _accountService = accountService;
     _httpContextAccessor = httpContextAccessor;
     _mapper = mapper;

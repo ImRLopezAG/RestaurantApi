@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Restaurant.Core.Application.Core.Models;
 
 namespace Restaurant.Core.Application.Dtos.Order;
 
-public class OrderSaveDto: Base
-{
-  public double SubTotal { get; set; }
+public class OrderSaveDto : Base {
   public int TableId { get; set; }
-  public int OrderStatusId { get; set; }
+  public int StatusId { get; set; }
+
+  public List<int> Plates { get; set; } = null!;
 }
