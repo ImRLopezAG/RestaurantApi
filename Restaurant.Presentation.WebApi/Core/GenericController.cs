@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol;
 using Restaurant.Core.Application.Contracts.Core;
@@ -5,6 +6,8 @@ using Restaurant.Core.Application.Core;
 using Restaurant.Core.Application.Core.Models;
 
 namespace Restaurant.Presentation.WebApi.Core;
+[Authorize(Roles = "Admin, Waiter")]
+
 public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGenericController<TDto, TSaveDto, TEntity> where TDto : class where TSaveDto : Base where TEntity : class {
 
   private readonly IGenericService<TDto, TSaveDto, TEntity> _service;
@@ -13,6 +16,7 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
 
   [HttpGet]
   [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public virtual async Task<ActionResult<IEnumerable<TDto>>> List() {
@@ -29,6 +33,7 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
 
   [HttpGet("{id}")]
   [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public virtual async Task<ActionResult<TDto>> GetById(int id) {
@@ -44,6 +49,7 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
 
   [HttpPost]
   [ProducesResponseType(StatusCodes.Status201Created)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public virtual async Task<ActionResult> Create([FromQuery] TSaveDto dto) {
@@ -64,6 +70,7 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
 
   [HttpPut("{id}")]
   [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public virtual async Task<ActionResult<TDto>> Update([FromQuery] TSaveDto dto) {
@@ -87,6 +94,7 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
 
   [HttpDelete("{id}")]
   [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public virtual async Task<ActionResult> Delete(int id) {

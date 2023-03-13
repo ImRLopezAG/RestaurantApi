@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Restaurant.Core.Application;
 using Restaurant.Infrastructure.Identity;
+using Restaurant.Infrastructure.Identity.Entities;
+using Restaurant.Infrastructure.Identity.Seeds;
 using Restaurant.Infrastructure.Persistence;
 using Restaurant.Presentation.WebApi;
 using Restaurant.WebApi.Extensions;
@@ -32,6 +35,20 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment()) {
   app.UseSwagger();
   app.UseSwaggerUI();
+}
+using (var scope = app.Services.CreateScope()) {
+  var services = scope.ServiceProvider;
+
+  try {
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    await DefaultRoles.SeedAsync(userManager, roleManager);
+    await DefaultAdminUser.SeedAsync(userManager, roleManager);
+    await DefaultWaiterUser.SeedAsync(userManager, roleManager);
+  } catch {
+
+  }
 }
 
 app.UseHttpsRedirection();

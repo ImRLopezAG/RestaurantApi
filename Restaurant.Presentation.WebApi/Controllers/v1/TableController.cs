@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Core.Application.Contracts;
 using Restaurant.Core.Application.Dtos.Table;
@@ -16,6 +17,22 @@ public class TableController : GenericController<TableDto, TableSaveDto, Table>,
     _orderService = orderService;
   }
 
+  [Authorize(Roles = "Admin, Waiter")]
+  [HttpGet]
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  public async override Task<ActionResult<IEnumerable<TableDto>>> List() => await base.List();
+
+  [Authorize(Roles = "Admin, Waiter")]
+  [HttpGet("{id}")]
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  [ProducesResponseType(StatusCodes.Status404NotFound)]
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  public async override Task<ActionResult<TableDto>> GetById(int id) => await base.GetById(id);
+
+
+
+  [Authorize(Roles = "Admin")]
   [HttpPost]
   [ProducesResponseType(StatusCodes.Status204NoContent)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -27,6 +44,7 @@ public class TableController : GenericController<TableDto, TableSaveDto, Table>,
     return await base.Create(dto);
   }
 
+  [Authorize(Roles = "Admin")]
   [HttpPut("{id}")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,6 +56,7 @@ public class TableController : GenericController<TableDto, TableSaveDto, Table>,
     return await base.Update(dto);
   }
 
+  [Authorize(Roles = "Waiter")]
   [HttpGet("{id}/orders")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -53,6 +72,7 @@ public class TableController : GenericController<TableDto, TableSaveDto, Table>,
     return Ok(table);
   }
 
+  [Authorize(Roles = "Waiter")]
   [HttpPut("{id}/status/{status}")]
   [ProducesResponseType(StatusCodes.Status204NoContent)]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]

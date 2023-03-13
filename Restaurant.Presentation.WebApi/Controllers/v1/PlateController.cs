@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Core.Application.Contracts;
 using Restaurant.Core.Application.Dtos.Plate;
@@ -8,6 +9,7 @@ using Restaurant.Presentation.WebApi.Core;
 namespace Restaurant.Presentation.WebApi.Controllers.v1;
 
 [ApiVersion("1.0")]
+[Authorize(Roles = "Admin")]
 public class PlateController : GenericController<PlateDto, PlateSaveDto, Plate>, IPlateController {
 
   private readonly IPlateService _plateService;

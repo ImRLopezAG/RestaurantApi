@@ -7,7 +7,7 @@ public static class DefaultAdminUser {
   public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager) {
     ApplicationUser defaultUser = new() {
       UserName = "AdminUser",
-      Email = "adminUser@email.com",
+      Email = "admin@email.com",
       FirstName = "John",
       LastName = "Doe",
       EmailConfirmed = true,
@@ -18,7 +18,7 @@ public static class DefaultAdminUser {
       var user = await userManager.FindByEmailAsync(defaultUser.Email);
       if (user == null) {
         await userManager.CreateAsync(defaultUser, "123Pa$$word!");
-        await userManager.AddToRoleAsync(defaultUser, Roles.Bartender.ToString());
+        await userManager.AddToRoleAsync(defaultUser, Roles.Waiter.ToString());
         await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
       }
     }

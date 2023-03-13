@@ -6,12 +6,9 @@ using Restaurant.Infrastructure.Identity.Entities;
 namespace Restaurant.Infrastructure.Persistence.Contexts;
 public class IdentityContext : IdentityDbContext<ApplicationUser> {
   public IdentityContext(DbContextOptions<IdentityContext> options) : base(options) { }
-
-
   protected override void OnModelCreating(ModelBuilder modelBuilder) {
-    //FLUENT API
     base.OnModelCreating(modelBuilder);
-    modelBuilder.HasDefaultSchema("Identity");
+    modelBuilder.HasDefaultSchema("Idt");
 
     modelBuilder.Entity<ApplicationUser>(entity => {
       entity.ToTable(name: "Users");
