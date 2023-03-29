@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Core.Application.Contracts;
 using Restaurant.Core.Application.Dtos.Account;
@@ -20,7 +21,14 @@ public class AccountController : BaseApiController {
   [HttpPost("register")]
   public async Task<IActionResult> RegisterAsync([FromQuery] RegisterRequest request) {
     var origin = Request.Headers["origin"];
-    return Ok(await _accountService.RegisterBasicUserAsync(request, origin));
+    return Ok(await _accountService.RegisterUserAsync(request, origin));
+  }
+
+  [Authorize(Roles = "Admin")]
+  [HttpPost("register-admin")]
+  public async Task<IActionResult> RegisterAdminAsync([FromQuery] RegisterRequest request) {
+    var origin = Request.Headers["origin"];
+    return Ok(await _accountService.RegisterUserAsync(request, origin, true));
   }
 
 }

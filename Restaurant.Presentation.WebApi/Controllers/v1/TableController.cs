@@ -17,13 +17,13 @@ public class TableController : GenericController<TableDto, TableSaveDto, Table>,
     _orderService = orderService;
   }
 
-  [Authorize(Roles = "Admin, Waiter")]
+  [Authorize]
   [HttpGet]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public async override Task<ActionResult<IEnumerable<TableDto>>> List() => await base.List();
 
-  [Authorize(Roles = "Admin, Waiter")]
+  [Authorize]
   [HttpGet("{id}")]
   [ProducesResponseType(StatusCodes.Status200OK)]
   [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -50,10 +50,17 @@ public class TableController : GenericController<TableDto, TableSaveDto, Table>,
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public async override Task<ActionResult<TableDto>> Update(TableSaveDto dto) {
-    if (dto.StatusId > 3 || dto.StatusId < 1)
-      return BadRequest("The table status is invalid");
 
-    return await base.Update(dto);
+
+    dto.Id = int.Parse(RouteData.Values["id"].ToString());
+    var entity = await _tableService.GetEntity(dto.Id);
+    if (entity == null)
+      return NotFound();
+
+    entity.Description = dto.Description;
+    entity.Capacity = dto.Capacity;
+
+    return await base.Update(entity);
   }
 
   [Authorize(Roles = "Waiter")]

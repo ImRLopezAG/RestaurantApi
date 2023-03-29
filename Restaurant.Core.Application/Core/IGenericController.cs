@@ -8,5 +8,4 @@ public interface IGenericController<TDto, TSaveDto, TEntity> where TDto : class 
   Task<ActionResult<TDto>> GetById(int id);
   Task<ActionResult> Create([FromQuery] TSaveDto dto);
   Task<ActionResult<TDto>> Update([FromQuery] TSaveDto dto);
-  Task<ActionResult> Delete(int id);
 }

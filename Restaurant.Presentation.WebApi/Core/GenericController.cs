@@ -41,7 +41,7 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
       var result = await _service.GetById(id);
       if (result == null)
         return NotFound($"The entity with id {id} does not exist");
-      return Ok(result);
+      return Ok(result.ToJson());
     } catch (Exception e) {
       return StatusCode(500, $"Error while getting entity : {e.Message}");
     }
@@ -88,24 +88,6 @@ public class GenericController<TDto, TSaveDto, TEntity> : BaseApiController, IGe
       return Ok(result);
     } catch (Exception e) {
       return StatusCode(500, $"Error while updating entity : {e.Message}");
-    }
-  }
-
-
-  [HttpDelete("{id}")]
-  [ProducesResponseType(StatusCodes.Status204NoContent)]
-  [ProducesResponseType(StatusCodes.Status403Forbidden)]
-  [ProducesResponseType(StatusCodes.Status404NotFound)]
-  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-  public virtual async Task<ActionResult> Delete(int id) {
-    try {
-      var entity = await _service.GetEntity(id);
-      if (entity == null)
-        return NotFound($"The entity with id {id} does not exist");
-      await _service.Delete(id);
-      return StatusCode(204, "The entity was deleted successfully");
-    } catch (Exception e) {
-      return StatusCode(500, $"Error while deleting entity : {e.Message}");
     }
   }
 }

@@ -67,7 +67,7 @@ public class AccountService : IAccountService {
     await _signInManager.SignOutAsync();
   }
 
-  public async Task<RegisterResponse> RegisterBasicUserAsync(RegisterRequest request, string origin) {
+  public async Task<RegisterResponse> RegisterUserAsync(RegisterRequest request, string origin, bool isAdmin = false) {
     RegisterResponse response = new() {
       HasError = false
     };
@@ -96,7 +96,7 @@ public class AccountService : IAccountService {
 
     var result = await _userManager.CreateAsync(user, request.Password);
     if (result.Succeeded) {
-      await _userManager.AddToRoleAsync(user, Roles.Waiter.ToString());
+      await _userManager.AddToRoleAsync(user, isAdmin ? Roles.Admin.ToString() : Roles.Waiter.ToString());
     } else {
       response.HasError = true;
       response.Error = $"An error occurred trying to register the user.";

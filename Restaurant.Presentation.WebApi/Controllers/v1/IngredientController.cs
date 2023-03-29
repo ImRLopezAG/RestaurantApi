@@ -13,5 +13,4 @@ namespace Restaurant.Presentation.WebApi.Controllers.v1;
 public class IngredientController : GenericController<IngredientDto, IngredientSaveDto, Ingredient>, IIngredientController {
   public IngredientController(IIngredientService IngredientService) : base(IngredientService) {
   }
-
 }

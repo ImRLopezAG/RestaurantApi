@@ -29,7 +29,7 @@ public class UserService : IUserService {
 
   public async Task<RegisterResponse> RegisterAsync(SaveUserVm vm, string origin) {
     RegisterRequest registerRequest = _mapper.Map<RegisterRequest>(vm);
-    return await _accountService.RegisterBasicUserAsync(registerRequest, origin);
+    return await _accountService.RegisterUserAsync(registerRequest, origin);
   }
 
 }

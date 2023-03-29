@@ -19,6 +19,9 @@ public class OrderController : GenericController<OrderDto, OrderSaveDto, Order>,
   [ProducesResponseType(StatusCodes.Status400BadRequest)]
   [ProducesResponseType(StatusCodes.Status500InternalServerError)]
   public async override Task<ActionResult> Create([FromBody] OrderSaveDto dto) {
+    if (!ModelState.IsValid)
+      return BadRequest(ModelState);
+
     if (dto.TableId < 1)
       return BadRequest("The table id is invalid");
 
@@ -27,6 +30,8 @@ public class OrderController : GenericController<OrderDto, OrderSaveDto, Order>,
 
     if (dto.StatusId > 2 || dto.StatusId < 1)
       return BadRequest("The order status is invalid");
+
+    dto.StatusId = 1;
 
     return await base.Create(dto);
   }
@@ -49,5 +54,22 @@ public class OrderController : GenericController<OrderDto, OrderSaveDto, Order>,
     order.Plates = dto.Plates;
 
     return await base.Update(order);
+  }
+
+  [HttpDelete("{id}")]
+  [ProducesResponseType(StatusCodes.Status204NoContent)]
+  [ProducesResponseType(StatusCodes.Status403Forbidden)]
+  [ProducesResponseType(StatusCodes.Status404NotFound)]
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  public virtual async Task<ActionResult> Delete(int id) {
+    try {
+      var entity = await _orderService.GetEntity(id);
+      if (entity == null)
+        return NotFound($"The Order with id {id} does not exist");
+      await _orderService.Delete(id);
+      return StatusCode(204, "The entity was deleted successfully");
+    } catch (Exception e) {
+      return StatusCode(500, $"Error while deleting entity : {e.Message}");
+    }
   }
 }
